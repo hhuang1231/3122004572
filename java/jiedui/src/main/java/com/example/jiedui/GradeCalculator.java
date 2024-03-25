@@ -1,5 +1,7 @@
 package com.example.jiedui;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,6 +10,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class GradeCalculator {
     public static void calculateGrade(String exercisesFile, String answersFile) {
         try {
@@ -18,7 +21,7 @@ public class GradeCalculator {
 
             for (int i = 0; i < exercises.size(); i++) {
                 int expectedAnswer = Integer.parseInt(answers.get(i));
-                int actualAnswer = ArithmeticExerciseGenerator.evaluateExpression(exercises.get(i));
+                int actualAnswer = Comparator.evaluateExpression(exercises.get(i));
                 if (actualAnswer == expectedAnswer) {
                     correctIndices.add(i + 1);
                 } else {
@@ -26,9 +29,9 @@ public class GradeCalculator {
                 }
             }
 
-            writeGradeToFile(correctIndices, wrongIndices);
+            writeToFile(correctIndices, wrongIndices);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("结果输出至文件异常", e);
         }
     }
 
@@ -43,12 +46,12 @@ public class GradeCalculator {
         return lines;
     }
 
-    private static void writeGradeToFile(List<Integer> correctIndices, List<Integer> wrongIndices) {
+    private static void writeToFile(List<Integer> correctIndices, List<Integer> wrongIndices) {
         try (PrintWriter writer = new PrintWriter("Grade.txt")) {
             writer.println("Correct: " + correctIndices.size() + " (" + formatIndices(correctIndices) + ")");
             writer.println("Wrong: " + wrongIndices.size() + " (" + formatIndices(wrongIndices) + ")");
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error("结果输出至文件异常", e);
         }
     }
 
