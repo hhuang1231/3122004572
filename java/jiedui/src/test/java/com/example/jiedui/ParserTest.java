@@ -3,6 +3,7 @@ package com.example.jiedui;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class ParserTest {
@@ -20,6 +21,7 @@ public class ParserTest {
         // Test parsing an invalid expression
         String invalidExpression = "2 + ";
         Parser parser = new Parser(invalidExpression);
-        parser.parse();
+        assertThrows(RuntimeException.class, parser::parse);
+
     }
 }

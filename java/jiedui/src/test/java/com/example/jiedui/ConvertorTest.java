@@ -3,6 +3,7 @@ package com.example.jiedui;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class ConvertorTest {
@@ -21,6 +22,6 @@ public class ConvertorTest {
     @Test
     public void testEvaluateInvalidExpression() {
         String invalidExpression = "2 + ";
-        Convertor.evaluateExpression(invalidExpression);
+        assertThrows(RuntimeException.class, () -> Convertor.evaluateExpression(invalidExpression));
     }
 }
