@@ -56,9 +56,29 @@ public class Parser {
         if (eat('(')) { // Parentheses
             x = parseExpression();
             eat(')');
-        } else if ((ch >= '0' && ch <= '9') || ch == '/') { // Numbers
-            while ((ch >= '0' && ch <= '9') || ch == '/') nextChar();
-            x = Double.parseDouble(expression.substring(startPos, this.pos));
+        } else if ((ch >= '0' && ch <= '9') || ch == '/') { // Numbers or fraction
+            StringBuilder numBuilder = new StringBuilder();
+            while ((ch >= '0' && ch <= '9') || ch == '/' || ch == '÷') {
+                if (ch == '÷') {
+                    numBuilder.append('/');
+                } else {
+                    numBuilder.append((char) ch);
+                }
+                nextChar();
+            }
+            String numString = numBuilder.toString();
+            // Check if it's a fraction
+            if (numString.contains("/")) {
+                String[] parts = numString.split("/");
+                if (parts.length != 2 || parts[0].isEmpty() || parts[1].isEmpty()) {
+                    throw new RuntimeException("Invalid fraction: " + numString);
+                }
+                int numerator = Integer.parseInt(parts[0]);
+                int denominator = Integer.parseInt(parts[1]);
+                x = (double) numerator / denominator;
+            } else {
+                x = Double.parseDouble(numString);
+            }
         } else {
             throw new RuntimeException("Unexpected: " + (char) ch);
         }

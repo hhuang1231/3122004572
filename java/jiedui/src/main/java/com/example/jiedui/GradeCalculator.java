@@ -12,6 +12,7 @@ import java.util.List;
 
 @Slf4j
 public class GradeCalculator {
+
     public static void calculateGrade(String exercisesFile, String answersFile) {
         try {
             List<String> exercises = readLines(exercisesFile);
@@ -21,7 +22,7 @@ public class GradeCalculator {
 
             for (int i = 0; i < exercises.size(); i++) {
                 int expectedAnswer = Integer.parseInt(answers.get(i));
-                int actualAnswer = Comparator.evaluateExpression(exercises.get(i));
+                int actualAnswer = Convertor.evaluateExpression(exercises.get(i));
                 if (actualAnswer == expectedAnswer) {
                     correctIndices.add(i + 1);
                 } else {
@@ -35,6 +36,9 @@ public class GradeCalculator {
         }
     }
 
+    /**
+     * 读取配置文件
+     */
     private static List<String> readLines(String filename) throws IOException {
         List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -55,6 +59,9 @@ public class GradeCalculator {
         }
     }
 
+    /**
+     * 格式化输出
+     */
     private static String formatIndices(List<Integer> indices) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < indices.size(); i++) {

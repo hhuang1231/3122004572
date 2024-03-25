@@ -15,13 +15,17 @@ public class Generator {
 
         for (int i = 0; i < numExercises; i++) {
             String expression = generateExpression(rangeLimit);
-            exercises.add(expression);
-            int answer = Comparator.evaluateExpression(expression);
-            answers.add(Integer.toString(answer));
+            int answer = Convertor.evaluateExpression(expression);
+            if (answer < 0) {
+                i--;
+            } else {
+                exercises.add(expression);
+                answers.add(Integer.toString(answer));
+            }
         }
 
-        writeToFile("Exercises.txt", exercises);
-        writeToFile("Answers.txt", answers);
+        writeToFile(".\\Exercises.txt", exercises);
+        writeToFile(".\\Answers.txt", answers);
     }
 
     private static String generateExpression(int rangeLimit) {
@@ -54,21 +58,5 @@ public class Generator {
             log.error("结果输出至文件异常", e);
         }
     }
-
-    private static boolean isValidExpression(String expression) {
-        // Check if expression follows rules 3, 4, and 6
-        return !expression.contains("-") && !expression.contains("÷") && countOperators(expression) <= 3;
-    }
-
-    private static int countOperators(String expression) {
-        int count = 0;
-        for (char c : expression.toCharArray()) {
-            if (c == '+' || c == '-' || c == '×' || c == '÷') {
-                count++;
-            }
-        }
-        return count;
-    }
-
 
 }

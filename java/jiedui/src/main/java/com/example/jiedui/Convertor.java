@@ -1,6 +1,6 @@
 package com.example.jiedui;
 
-public class Comparator {
+public class Convertor {
     public static int evaluateExpression(String expression) {
         return (int) Math.round(eval(expression));
     }
